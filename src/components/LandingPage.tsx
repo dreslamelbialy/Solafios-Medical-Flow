@@ -29,7 +29,6 @@ import {
 } from 'lucide-react';
 import { playReminderChime } from '../utils/audioAlert';
 import { PrivacyPolicyModal } from './PrivacyPolicyModal';
-import { OAuthHelperModal } from './OAuthHelperModal';
 
 interface LandingPageProps {
   onLoginWithGoogle: () => void;
@@ -65,9 +64,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     isAr ? 'سجل أدوية (ملفي الشخصي)' : 'My Meds Folder',
   ]);
 
-  // Modals for Privacy Policy & OAuth Helper
+  // Modals for Privacy Policy
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
-  const [showOAuthModal, setShowOAuthModal] = useState(false);
 
   useEffect(() => {
     if (window.location.hash === '#privacy') {
@@ -799,15 +797,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
             <button
               type="button"
-              onClick={() => setShowOAuthModal(true)}
-              className="px-3 py-1.5 rounded-lg bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 border border-teal-500/30 transition-colors cursor-pointer flex items-center gap-1.5"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>{isAr ? 'تحميل اللوجو وبيانات Google' : 'Download Logo & Consent Data'}</span>
-            </button>
-
-            <button
-              type="button"
               onClick={() => setShowPrivacyModal(true)}
               className="hover:text-teal-500 underline underline-offset-4 transition-colors cursor-pointer"
             >
@@ -823,11 +812,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <PrivacyPolicyModal
         isOpen={showPrivacyModal}
         onClose={() => setShowPrivacyModal(false)}
-        lang={lang}
-      />
-      <OAuthHelperModal
-        isOpen={showOAuthModal}
-        onClose={() => setShowOAuthModal(false)}
         lang={lang}
       />
     </div>
