@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* High Contrast Crisp Light Mode Enhancements */
+  html:not(.dark) body {
+    background-color: #f1f5f9;
+    color: #090d16;
+  }
+
+  /* Strengthen contrast for light mode subtle texts */
+  html:not(.dark) .text-slate-400 {
+    color: #475569 !important;
+  }
+  html:not(.dark) .text-slate-500 {
+    color: #334155 !important;
+  }
+  html:not(.dark) .text-slate-600 {
+    color: #1e293b !important;
+  }
+
+  /* Crisp card borders and background contrast in light mode */
+  html:not(.dark) .border-slate-200 {
+    border-color: #cbd5e1 !important;
+  }
+  html:not(.dark) .border-slate-300 {
+    border-color: #94a3b8 !important;
+  }
+  html:not(.dark) .bg-slate-50 {
+    background-color: #f8fafc !important;
+  }
+  html:not(.dark) .bg-slate-100 {
+    background-color: #e2e8f0 !important;
+  }
+
+  /* Crisp input contrast in light mode */
+  html:not(.dark) input,
+  html:not(.dark) select,
+  html:not(.dark) textarea {
+    border-color: #94a3b8;
+    color: #090d16;
+    background-color: #ffffff;
+  }
+  html:not(.dark) input::placeholder,
+  html:not(.dark) textarea::placeholder {
+    color: #64748b;
+  }
+
+  /* Dark mode overrides */
+  html.dark body {
+    background-color: #020617;
+    color: #f8fafc;
+  }
+  html.dark .bg-white {
+    background-color: #0f172a;
+  }
+  html.dark .bg-slate-50 {
+    background-color: #0b1120;
+  }
+  html.dark .bg-slate-100 {
+    background-color: #1e293b;
+  }
+  html.dark .border-slate-100,
+  html.dark .border-slate-200 {
+    border-color: #1e293b;
+  }
+  html.dark .border-slate-300 {
+    border-color: #334155;
+  }
+  html.dark .text-slate-900,
+  html.dark .text-slate-950 {
+    color: #f8fafc;
+  }
+  html.dark .text-slate-800 {
+    color: #e2e8f0;
+  }
+  html.dark .text-slate-700 {
+    color: #cbd5e1;
+  }
+  html.dark .text-slate-600 {
+    color: #94a3b8;
+  }
+  html.dark .text-slate-500 {
+    color: #94a3b8;
+  }
+  html.dark input,
+  html.dark select,
+  html.dark textarea {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+  }
+  html.dark input::placeholder,
+  html.dark textarea::placeholder {
+    color: #64748b;
+  }
+  html.dark .hover\:bg-slate-50:hover {
+    background-color: #1e293b;
+  }
+  html.dark .hover\:bg-slate-100:hover {
+    background-color: #334155;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+  }
+
+  .no-print,
+  header,
+  footer,
+  nav,
+  .print-hidden {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Make modal container fill the full printed page without backdrop or scrollbars */
+  .print-modal-container {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .print-card-content {
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th, td {
+    padding: 6px 8px !important;
+  }
+}

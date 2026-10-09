@@ -1,0 +1,6 @@
+{
+  "name": "Solafios Mediflow - Medicine & Dose Tracker",
+  "description": "Smart medication management, automated dose scheduling, reminders, meal-linked timing, and adherence tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
