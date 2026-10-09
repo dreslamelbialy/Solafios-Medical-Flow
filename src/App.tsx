@@ -72,12 +72,27 @@ import { HistoryTab } from './components/HistoryTab';
 import { SettingsTab } from './components/SettingsTab';
 import { ScanPrescriptionTab } from './components/ScanPrescriptionTab';
 import { PrintPrescriptionModal } from './components/PrintPrescriptionModal';
+import { AuthErrorModal } from './components/AuthErrorModal';
 
 type ActiveTab = 'add' | 'schedule' | 'reminders' | 'history' | 'settings' | 'scan';
 type ViewMode = 'landing' | 'app';
 
 export default function App() {
-  const [viewMode, setViewMode] = useState<ViewMode>('landing');
+  const [viewMode, setViewModeState] = useState<ViewMode>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = sessionStorage.getItem('mediflow_view_mode') as ViewMode | null;
+      if (saved === 'app' || saved === 'landing') return saved;
+    }
+    return 'landing';
+  });
+
+  const setViewMode = (mode: ViewMode) => {
+    setViewModeState(mode);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('mediflow_view_mode', mode);
+    }
+  };
+
   const [activeTab, setActiveTab] = useState<ActiveTab>('schedule');
   const [settings, setSettingsState] = useState<UserSettings>(loadSettings);
   const [medicines, setMedicines] = useState<Medicine[]>(loadMedicines);
@@ -89,6 +104,14 @@ export default function App() {
   const [activeProfileId, setActiveProfileIdState] = useState<string>(loadActiveProfileId);
   const [googleUser, setGoogleUserState] = useState<GoogleAuthUser | null>(loadGoogleUser);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // Auth notice modal for Vercel / domain authorization issues
+  const [authErrorModal, setAuthErrorModal] = useState<{
+    show: boolean;
+    title: string;
+    message: string;
+    isDomainIssue: boolean;
+  }>({ show: false, title: '', message: '', isDomainIssue: false });
 
   // Modals state
   const [showPrintModal, setShowPrintModal] = useState(false);
@@ -244,8 +267,40 @@ export default function App() {
       }
     } catch (err: any) {
       console.error('Google sign-in error:', err);
-      // If popup was blocked or failed, allow guest entry
-      setViewMode('app');
+      const code = err?.code || '';
+      const msg = err?.message || '';
+
+      if (code === 'auth/unauthorized-domain' || msg.includes('unauthorized-domain')) {
+        const currentHost = typeof window !== 'undefined' ? window.location.hostname : 'النطاق الحالي';
+        setAuthErrorModal({
+          show: true,
+          title: isAr ? 'تنبيه: نطاق Vercel غير مفعّل في Firebase' : 'Notice: Domain Not Authorized in Firebase',
+          message: isAr
+            ? `نطاق موقعك الحالي (${currentHost}) يحتاج للإضافة في قائمة النطاقات المعتمدة (Authorized Domains) في إعدادات Firebase Console حتى يسمح Google بتسجيل الدخول.\n\nيمكنك إما إضافة النطاق في Firebase، أو المتابعة الفورية كزائر لتجربة كافة إمكانيات التطبيق وحساب الجرعات ومزامنة العائلة بدون قيود.`
+            : `Your current host (${currentHost}) must be added to Authorized Domains in Firebase Console (Authentication > Settings > Authorized Domains).\n\nYou can continue exploring in Guest Mode right now!`,
+          isDomainIssue: true,
+        });
+      } else if (code === 'auth/popup-closed-by-user') {
+        // User closed the popup intentionally
+      } else if (code === 'auth/popup-blocked') {
+        setAuthErrorModal({
+          show: true,
+          title: isAr ? 'المتصفح حظر النافذة المنبثقة' : 'Popup Blocked',
+          message: isAr
+            ? 'قام المتصفح بحظر نافذة تسجيل الدخول المنبثقة. يرجى السماح بالنوافذ المنبثقة (Popups) لهذا الموقع ثم المحاولة مجدداً.'
+            : 'Your browser blocked the popup. Please enable popups and try again.',
+          isDomainIssue: false,
+        });
+      } else {
+        setAuthErrorModal({
+          show: true,
+          title: isAr ? 'تعذر إتمام الدخول' : 'Sign-in Incomplete',
+          message: isAr
+            ? `لم يكتمل تسجيل الدخول: ${err?.message || 'حدث خطأ غير متوقع'}. يمكنك تجربة الدخول كزائر فوراً.`
+            : `Could not complete sign in: ${err?.message || 'Unknown error'}. You can continue as guest.`,
+          isDomainIssue: false,
+        });
+      }
     } finally {
       setIsLoggingIn(false);
     }
@@ -528,15 +583,29 @@ export default function App() {
   // If in landing page view, show creative LandingPage
   if (viewMode === 'landing') {
     return (
-      <LandingPage
-        onLoginWithGoogle={handleGoogleLogin}
-        onEnterGuestDemo={() => setViewMode('app')}
-        isLoggingIn={isLoggingIn}
-        lang={lang}
-        onToggleLang={handleToggleLang}
-        theme={settings.theme || 'light'}
-        onToggleTheme={handleToggleTheme}
-      />
+      <>
+        <LandingPage
+          onLoginWithGoogle={handleGoogleLogin}
+          onEnterGuestDemo={() => setViewMode('app')}
+          isLoggingIn={isLoggingIn}
+          lang={lang}
+          onToggleLang={handleToggleLang}
+          theme={settings.theme || 'light'}
+          onToggleTheme={handleToggleTheme}
+        />
+        <AuthErrorModal
+          isOpen={authErrorModal.show}
+          title={authErrorModal.title}
+          message={authErrorModal.message}
+          isDomainIssue={authErrorModal.isDomainIssue}
+          onClose={() => setAuthErrorModal({ ...authErrorModal, show: false })}
+          onContinueAsGuest={() => {
+            setAuthErrorModal({ ...authErrorModal, show: false });
+            setViewMode('app');
+          }}
+          lang={lang}
+        />
+      </>
     );
   }
 
@@ -837,6 +906,17 @@ export default function App() {
         onComplete={handleProfilesUpdated}
         lang={lang}
         userEmail={googleUser?.email}
+      />
+
+      {/* Auth Error / Vercel Domain Guidance Modal */}
+      <AuthErrorModal
+        isOpen={authErrorModal.show}
+        title={authErrorModal.title}
+        message={authErrorModal.message}
+        isDomainIssue={authErrorModal.isDomainIssue}
+        onClose={() => setAuthErrorModal({ ...authErrorModal, show: false })}
+        onContinueAsGuest={() => setAuthErrorModal({ ...authErrorModal, show: false })}
+        lang={lang}
       />
 
       {/* Floating Quick Action Dock to Return to Landing Page */}
