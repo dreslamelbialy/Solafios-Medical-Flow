@@ -17,6 +17,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Check,
+  Trash2,
+  AlertTriangle,
 } from 'lucide-react';
 import { UserSettings } from '../types/mediflow';
 import { testSupabaseConnection } from '../lib/supabaseClient';
@@ -29,6 +31,7 @@ interface SettingsTabProps {
   onRestoreSampleData: () => void;
   onPrintPrescription: () => void;
   onExportJson: () => void;
+  onWipeAccount?: () => void;
   lang: 'ar' | 'en';
 }
 
@@ -39,6 +42,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   onRestoreSampleData,
   onPrintPrescription,
   onExportJson,
+  onWipeAccount,
   lang,
 }) => {
   const isAr = lang === 'ar';
@@ -451,6 +455,68 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 </div>
               </div>
             </button>
+          </div>
+        </div>
+
+        {/* Section 5: Account Management & Data Deletion (Danger Zone) */}
+        <div className="bg-red-50/50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-900/60 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 border-b border-red-200/60 dark:border-red-800/60 pb-3">
+            <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+            <div>
+              <h3 className="font-bold text-red-950 dark:text-red-200 text-base">
+                {isAr ? 'إدارة الحساب ومسح البيانات نهائياً' : 'Account Management & Data Deletion'}
+              </h3>
+              <p className="text-2xs text-red-700/80 dark:text-red-400 mt-0.5">
+                {isAr
+                  ? 'خيارات تصفير السجل للبدء من جديد، أو إغلاق الحساب وحذف كافة البيانات ومغادرة التطبيق'
+                  : 'Options to clear medical records or permanently close account'}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-red-200 dark:border-red-800 space-y-2 flex flex-col justify-between">
+              <div>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">
+                  {isAr ? 'تصفير كافة الأدوية والسجلات' : 'Wipe All Medical Data'}
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                  {isAr
+                    ? 'يمسح جميع الأدوية، التذكيرات، والجرعات المسجلة مع البقاء مسجلاً بالحساب للبدء بسجل فارغ ونظيف تماماً.'
+                    : 'Clears all medicines, doses, and reminders while keeping your account signed in.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onResetData}
+                className="w-full mt-3 px-4 py-2.5 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-800 font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <RotateCcw className="w-4 h-4 text-red-600" />
+                <span>{isAr ? 'تصفير ومسح كافة الأدوية الآن' : 'Clear All Medicines'}</span>
+              </button>
+            </div>
+
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-red-200 dark:border-red-800 space-y-2 flex flex-col justify-between">
+              <div>
+                <h4 className="font-bold text-sm text-red-900 dark:text-red-300 flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-red-600" />
+                  <span>{isAr ? 'إغلاق الحساب ومسح البيانات نهائياً' : 'Delete Account & Wipe Everything'}</span>
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                  {isAr
+                    ? 'حذف شامل: يمسح كل شيء من المتصفح، يسجل الخروج من Google فوراً، ويعيدك لصفحة البداية.'
+                    : 'Permanently wipes all local data, signs out of Google, and resets to landing page.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onWipeAccount}
+                className="w-full mt-3 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4 text-white" />
+                <span>{isAr ? 'إغلاق الحساب ومسح كافة البيانات' : 'Delete Account & Sign Out'}</span>
+              </button>
+            </div>
           </div>
         </div>
 

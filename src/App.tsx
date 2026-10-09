@@ -49,7 +49,9 @@ import {
   loadGoogleUser,
   saveGoogleUser,
   resetAllData,
+  wipeAccountAndAllData,
   getInitialSampleMedicines,
+  DEFAULT_PROFILES,
 } from './utils/storage';
 import { calculateDosesAndReminders, calculateAdherence } from './utils/doseCalculator';
 import { getSupabaseClient, syncMedicineToSupabase } from './lib/supabaseClient';
@@ -198,6 +200,18 @@ export default function App() {
       globalReminderScheduler.clearAll();
     };
   }, [reminders, medicines, settings]);
+
+  // Clean initial demo medicines if this is a real logged-in Google account with only default samples
+  useEffect(() => {
+    if (googleUser && medicines.length > 0 && medicines.every((m) => m.id.startsWith('med-sample-'))) {
+      setMedicines([]);
+      saveMedicines([]);
+      setDoses([]);
+      saveDoses([]);
+      setReminders([]);
+      saveReminders([]);
+    }
+  }, [googleUser]);
 
   const activeProfile = useMemo(() => {
     return profiles.find((p) => p.id === activeProfileId) || profiles[0] || {
@@ -489,6 +503,28 @@ export default function App() {
       setMedicines([]);
       setDoses([]);
       setReminders([]);
+    }
+  };
+
+  const handleWipeAccount = async () => {
+    const confirmMsg = isAr
+      ? 'هل أنت متأكد تماماً من رغبتك في إغلاق الحساب ومسح كافة البيانات؟\n\nسيتم حذف جميع الأدوية، التذكيرات، وسجلات العائلة نهائياً من هذا الجهاز، وتسجيل الخروج من حساب Google.'
+      : 'Are you sure you want to permanently close your account and wipe all data?';
+    if (confirm(confirmMsg)) {
+      try {
+        await googleSignOut();
+      } catch (e) {
+        console.warn('Sign out warning:', e);
+      }
+      wipeAccountAndAllData();
+      setGoogleUserState(null);
+      setMedicines([]);
+      setDoses([]);
+      setReminders([]);
+      setProfiles(DEFAULT_PROFILES);
+      setActiveProfileIdState('profile-self');
+      setViewMode('landing');
+      setActiveTab('schedule');
     }
   };
 
@@ -878,6 +914,7 @@ export default function App() {
             onRestoreSampleData={handleRestoreSampleData}
             onPrintPrescription={() => setShowPrintModal(true)}
             onExportJson={handleExportJson}
+            onWipeAccount={handleWipeAccount}
             lang={lang}
           />
         )}

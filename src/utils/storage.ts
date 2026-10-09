@@ -141,12 +141,19 @@ export function loadMedicines(): Medicine[] {
   if (typeof window === 'undefined') return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.MEDICINES);
-    if (!raw) {
-      return getInitialSampleMedicines();
+    if (raw !== null) {
+      return JSON.parse(raw);
     }
-    return JSON.parse(raw);
-  } catch {
+    // If a Google user is authenticated, start with a pristine empty list
+    const user = loadGoogleUser();
+    if (user) {
+      saveMedicines([]);
+      return [];
+    }
+    // Otherwise in guest demo mode, return sample medicines
     return getInitialSampleMedicines();
+  } catch {
+    return [];
   }
 }
 
@@ -163,26 +170,31 @@ export function loadDoses(): DoseSchedule[] {
   if (typeof window === 'undefined') return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.DOSES);
-    if (!raw) {
-      const initialMeds = getInitialSampleMedicines();
-      const settings = loadSettings();
-      let allDoses: DoseSchedule[] = [];
-      initialMeds.forEach((m) => {
-        const { doses } = calculateDosesAndReminders(m, settings);
-        allDoses = [...allDoses, ...doses];
-      });
-      // Mark some past doses as taken for realistic initial adherence
-      const now = Date.now();
-      allDoses.forEach((d) => {
-        if (new Date(d.dose_time).getTime() < now) {
-          d.taken = true;
-          d.taken_at = d.dose_time;
-        }
-      });
-      saveDoses(allDoses);
-      return allDoses;
+    if (raw !== null) {
+      return JSON.parse(raw);
     }
-    return JSON.parse(raw);
+    const user = loadGoogleUser();
+    if (user) {
+      saveDoses([]);
+      return [];
+    }
+    const initialMeds = getInitialSampleMedicines();
+    const settings = loadSettings();
+    let allDoses: DoseSchedule[] = [];
+    initialMeds.forEach((m) => {
+      const { doses } = calculateDosesAndReminders(m, settings);
+      allDoses = [...allDoses, ...doses];
+    });
+    // Mark some past doses as taken for realistic initial adherence
+    const now = Date.now();
+    allDoses.forEach((d) => {
+      if (new Date(d.dose_time).getTime() < now) {
+        d.taken = true;
+        d.taken_at = d.dose_time;
+      }
+    });
+    saveDoses(allDoses);
+    return allDoses;
   } catch {
     return [];
   }
@@ -296,8 +308,17 @@ export function getInitialSampleMedicines(): Medicine[] {
 
 export function resetAllData(): void {
   if (typeof window === 'undefined') return;
-  localStorage.removeItem(STORAGE_KEYS.MEDICINES);
-  localStorage.removeItem(STORAGE_KEYS.DOSES);
-  localStorage.removeItem(STORAGE_KEYS.REMINDERS);
-  localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+  localStorage.setItem(STORAGE_KEYS.MEDICINES, JSON.stringify([]));
+  localStorage.setItem(STORAGE_KEYS.DOSES, JSON.stringify([]));
+  localStorage.setItem(STORAGE_KEYS.REMINDERS, JSON.stringify([]));
+  localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
+}
+
+export function wipeAccountAndAllData(): void {
+  if (typeof window === 'undefined') return;
+  // Clear all application keys completely
+  Object.values(STORAGE_KEYS).forEach((key) => {
+    localStorage.removeItem(key);
+  });
+  sessionStorage.removeItem('mediflow_view_mode');
 }
