@@ -25,8 +25,11 @@ import {
   Check,
   ArrowRight,
   UserCheck,
+  Download,
 } from 'lucide-react';
 import { playReminderChime } from '../utils/audioAlert';
+import { PrivacyPolicyModal } from './PrivacyPolicyModal';
+import { OAuthHelperModal } from './OAuthHelperModal';
 
 interface LandingPageProps {
   onLoginWithGoogle: () => void;
@@ -61,6 +64,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     isAr ? 'سجل أدوية (والدتي)' : 'Mother Meds Folder',
     isAr ? 'سجل أدوية (ملفي الشخصي)' : 'My Meds Folder',
   ]);
+
+  // Modals for Privacy Policy & OAuth Helper
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showOAuthModal, setShowOAuthModal] = useState(false);
+
+  useEffect(() => {
+    if (window.location.hash === '#privacy') {
+      setShowPrivacyModal(true);
+    }
+  }, []);
 
   // Realtime ECG pulse animation tick
   const [ecgBpm, setEcgBpm] = useState(72);
@@ -123,13 +136,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* Brand with Apple Layered 3D Icon */}
           <div className="flex items-center gap-3.5">
             <div className="relative group cursor-pointer">
-              {/* Apple HIG Multi-Layer Specular Effect */}
-              <div className="w-12 h-12 rounded-[16px] bg-gradient-to-b from-teal-300 via-teal-600 to-emerald-900 p-[1.5px] shadow-xl shadow-teal-500/30 ring-1 ring-white/30 transition-all duration-300 group-hover:scale-105 group-hover:shadow-teal-400/50">
-                <div className="w-full h-full rounded-[14px] bg-gradient-to-tr from-teal-950 via-teal-700 to-emerald-500 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
-                  <Pill className="w-6 h-6 text-white transform -rotate-45 drop-shadow-lg" />
-                </div>
-              </div>
+              <img
+                src="/logo.png"
+                alt="Solafios Mediflow Logo"
+                className="w-12 h-12 rounded-[16px] object-cover shadow-xl shadow-teal-500/30 ring-2 ring-teal-400/40 transition-all duration-300 group-hover:scale-105 group-hover:shadow-teal-400/50"
+              />
             </div>
 
             <div>
@@ -778,21 +789,47 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
-          <div>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="Logo" className="w-6 h-6 rounded-md object-cover" />
             <span className={`font-black text-sm ${isDark ? 'text-white' : 'text-slate-950'}`}>Solafios Mediflow</span>
             <span className="mx-2">•</span>
             <span className="font-semibold">{isAr ? 'منظومة الرعاية السريرية العائلية والمزامنة السحابية الذكية' : 'Family Medication Management'}</span>
           </div>
 
-          <div className="flex items-center gap-4 text-2xs font-semibold text-slate-500">
-            <span>Dr. Eslam Elbialy</span>
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setShowOAuthModal(true)}
+              className="px-3 py-1.5 rounded-lg bg-teal-500/10 hover:bg-teal-500/20 text-teal-600 dark:text-teal-400 border border-teal-500/30 transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>{isAr ? 'تحميل اللوجو وبيانات Google' : 'Download Logo & Consent Data'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowPrivacyModal(true)}
+              className="hover:text-teal-500 underline underline-offset-4 transition-colors cursor-pointer"
+            >
+              {isAr ? 'سياسة الخصوصية وبنود الاستخدام' : 'Privacy Policy'}
+            </button>
             <span>•</span>
-            <span>Google Drive API v3</span>
-            <span>•</span>
-            <span>{isAr ? 'المنظومة السريرية الذكية' : 'Smart Clinical System'}</span>
+            <span className="text-slate-400">Dr. Eslam Elbialy</span>
           </div>
         </div>
       </footer>
+
+      {/* Modals */}
+      <PrivacyPolicyModal
+        isOpen={showPrivacyModal}
+        onClose={() => setShowPrivacyModal(false)}
+        lang={lang}
+      />
+      <OAuthHelperModal
+        isOpen={showOAuthModal}
+        onClose={() => setShowOAuthModal(false)}
+        lang={lang}
+      />
     </div>
   );
 };

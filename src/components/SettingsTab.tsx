@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { UserSettings } from '../types/mediflow';
 import { testSupabaseConnection } from '../lib/supabaseClient';
+import { OAuthHelperModal } from './OAuthHelperModal';
 
 interface SettingsTabProps {
   settings: UserSettings;
@@ -47,6 +48,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   const [isTesting, setIsTesting] = useState(false);
   const [savedNotice, setSavedNotice] = useState(false);
   const [copiedSql, setCopiedSql] = useState(false);
+  const [showOAuthModal, setShowOAuthModal] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -452,6 +454,49 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         </div>
 
+        {/* App Logo & Google Cloud OAuth Setup */}
+        <div className="bg-white p-6 rounded-2xl border border-teal-100 shadow-2xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <img
+                src="/logo.png"
+                alt="Mediflow Logo"
+                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-teal-500/30 shadow-md"
+              />
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  {isAr ? 'شعار التطبيق وبيانات شاشة Google OAuth' : 'App Logo & Google OAuth Setup'}
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {isAr
+                    ? 'لوجو رسمي جاهز للرفع وشاشة مساعدة لملء بيانات Google Cloud Console'
+                    : 'Official high-res logo ready for Google Cloud Console OAuth consent screen'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <a
+                href="/logo.png"
+                download="mediflow-logo.png"
+                className="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Download className="w-4 h-4 text-teal-600" />
+                <span>{isAr ? 'تحميل اللوجو' : 'Download Logo'}</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setShowOAuthModal(true)}
+                className="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>{isAr ? 'عرض بيانات Google' : 'View Google Data'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         {savedNotice && (
           <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-emerald-800 text-sm">
             <CheckCircle2 className="w-5 h-5 shrink-0" />
@@ -472,6 +517,12 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </button>
         </div>
       </form>
+
+      <OAuthHelperModal
+        isOpen={showOAuthModal}
+        onClose={() => setShowOAuthModal(false)}
+        lang={lang}
+      />
     </div>
   );
 };

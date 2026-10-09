@@ -274,10 +274,10 @@ export default function App() {
         const currentHost = typeof window !== 'undefined' ? window.location.hostname : 'النطاق الحالي';
         setAuthErrorModal({
           show: true,
-          title: isAr ? 'تنبيه: نطاق Vercel غير مفعّل في Firebase' : 'Notice: Domain Not Authorized in Firebase',
+          title: isAr ? 'تنبيه لصاحب التطبيق: نطاق Vercel يحتاج تفعيل' : 'Notice for App Owner: Authorize Vercel Domain',
           message: isAr
-            ? `نطاق موقعك الحالي (${currentHost}) يحتاج للإضافة في قائمة النطاقات المعتمدة (Authorized Domains) في إعدادات Firebase Console حتى يسمح Google بتسجيل الدخول.\n\nيمكنك إما إضافة النطاق في Firebase، أو المتابعة الفورية كزائر لتجربة كافة إمكانيات التطبيق وحساب الجرعات ومزامنة العائلة بدون قيود.`
-            : `Your current host (${currentHost}) must be added to Authorized Domains in Firebase Console (Authentication > Settings > Authorized Domains).\n\nYou can continue exploring in Guest Mode right now!`,
+            ? `أنت كصاحب للتطبيق تقوم بإضافة هذا النطاق (${currentHost}) مرة واحدة فقط في لوحة تحكم Firebase Console.\n\nبمجرد إضافتك له، سيتمكن جميع المستخدمين والزوار من تسجيل الدخول بحسابات Google الخاصة بهم تلقائياً بضغطة زر دون أي خطوات إضافية من جهتهم!`
+            : `As the app owner, you only need to add this domain (${currentHost}) once in Firebase Console.\n\nOnce added, all visitors and users will be able to Sign in with Google with a single click without any setup on their end!`,
           isDomainIssue: true,
         });
       } else if (code === 'auth/popup-closed-by-user') {
@@ -659,9 +659,11 @@ export default function App() {
               className="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer group"
               title={isAr ? 'العودة للصفحة الأولى (Landing Page)' : 'Back to Landing Page'}
             >
-              <div className="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                <Pill className="w-5 h-5 text-white transform -rotate-45" />
-              </div>
+              <img
+                src="/logo.png"
+                alt="Solafios Mediflow Logo"
+                className="w-10 h-10 rounded-xl object-cover shadow-xs group-hover:scale-105 transition-transform border border-teal-500/20"
+              />
             </button>
             <div>
               <div className="flex items-center gap-2">
