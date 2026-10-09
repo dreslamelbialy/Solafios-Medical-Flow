@@ -18,10 +18,16 @@ import {
   CalendarCheck,
   Stethoscope,
   Printer,
+  AlarmClock,
 } from 'lucide-react';
 import { DoseSchedule, Medicine, UserSettings } from '../types/mediflow';
 import { formatTimeArabic, formatDateArabic } from '../utils/doseCalculator';
 import { playSuccessChime } from '../utils/audioAlert';
+import {
+  getGoogleCalendarUrl,
+  generateSingleDoseIcs,
+  downloadIcsFile,
+} from '../utils/calendarSync';
 
 interface ScheduleTabProps {
   medicines: Medicine[];
@@ -423,6 +429,30 @@ export const ScheduleTab: React.FC<ScheduleTabProps> = ({
 
                 {/* Right side: Actions */}
                 <div className="flex items-center gap-2 self-end md:self-center shrink-0">
+                  {/* Calendar & Alarm shortcut */}
+                  <div className="flex items-center gap-1 border-r border-slate-200 dark:border-slate-800 pr-2 mr-0.5">
+                    <a
+                      href={getGoogleCalendarUrl(med, dose.dose_time, lang)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950/40 transition-colors cursor-pointer"
+                      title={isAr ? 'إضافة إلى تقويم Google' : 'Add to Google Calendar'}
+                    >
+                      <Calendar className="w-3.5 h-3.5" />
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const ics = generateSingleDoseIcs(med, dose.dose_time, lang);
+                        downloadIcsFile(`${med.name}-dose.ics`, ics);
+                      }}
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors cursor-pointer"
+                      title={isAr ? 'إضافة لمنبه وتقويم الهاتف (.ics)' : 'Add to Phone Alarm (.ics)'}
+                    >
+                      <AlarmClock className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
                   {dose.taken ? (
                     <button
                       onClick={() => handleTake(dose.id, true)}

@@ -5,24 +5,19 @@ import {
   Utensils,
   Moon,
   Sun,
-  Database,
   CheckCircle2,
   AlertCircle,
-  Copy,
   Printer,
   Download,
   RotateCcw,
   Volume2,
   VolumeX,
   ExternalLink,
-  ShieldCheck,
   Check,
   Trash2,
   AlertTriangle,
 } from 'lucide-react';
 import { UserSettings } from '../types/mediflow';
-import { testSupabaseConnection } from '../lib/supabaseClient';
-import { OAuthHelperModal } from './OAuthHelperModal';
 
 interface SettingsTabProps {
   settings: UserSettings;
@@ -48,44 +43,13 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   const isAr = lang === 'ar';
 
   const [form, setForm] = useState<UserSettings>(settings);
-  const [testResult, setTestResult] = useState<{ success?: boolean; message?: string } | null>(null);
-  const [isTesting, setIsTesting] = useState(false);
   const [savedNotice, setSavedNotice] = useState(false);
-  const [copiedSql, setCopiedSql] = useState(false);
-  const [showOAuthModal, setShowOAuthModal] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateSettings(form);
     setSavedNotice(true);
     setTimeout(() => setSavedNotice(false), 2500);
-  };
-
-  const handleTestSupabase = async () => {
-    if (!form.supabase_url || !form.supabase_anon_key) {
-      setTestResult({
-        success: false,
-        message: isAr
-          ? 'يرجى إدخال كلٍ من رابط المشروع (Project URL) ومفتاح Anon Key أولاً.'
-          : 'Please enter both Supabase URL and Anon Key first.',
-      });
-      return;
-    }
-
-    setIsTesting(true);
-    setTestResult(null);
-    const res = await testSupabaseConnection(form.supabase_url, form.supabase_anon_key);
-    setIsTesting(false);
-    setTestResult(res);
-  };
-
-  const handleCopySqlInstruction = () => {
-    const text = `-- لتفعيل قاعدة بيانات Solafios Mediflow في Supabase:
--- افتح Supabase Dashboard > SQL Editor ثم الصق محتوى ملف supabase-schema.sql
--- أو راجع ملف IMPLEMENTATION-NOTES.md`;
-    navigator.clipboard.writeText(text);
-    setCopiedSql(true);
-    setTimeout(() => setCopiedSql(false), 2000);
   };
 
   return (
@@ -298,91 +262,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         </div>
 
-        {/* Section 3: Supabase Backend Connection */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <div className="flex items-center gap-2">
-              <Database className="w-5 h-5 text-emerald-600" />
-              <h3 className="font-bold text-slate-900 text-base">
-                {isAr ? 'ربط قاعدة بيانات Supabase (Backend Database)' : 'Supabase Backend Integration'}
-              </h3>
-            </div>
-            <button
-              type="button"
-              onClick={handleCopySqlInstruction}
-              className="text-xs text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1"
-            >
-              <Copy className="w-3.5 h-3.5" />
-              <span>{copiedSql ? (isAr ? 'تم النسخ!' : 'Copied!') : (isAr ? 'نسخ تعليمات SQL' : 'Copy SQL Help')}</span>
-            </button>
-          </div>
-
-          <p className="text-xs text-slate-500">
-            {isAr
-              ? 'يعمل التطبيق بشكل كامل وتلقائي مع حفظ محلي، ويمكنك ربطه بمشروع Supabase الخاص بك للمزامنة السحابية. تم إنشاء ملف supabase-schema.sql وجاهز للاستخدام.'
-              : 'Works offline out-of-the-box, or connect your Supabase project for real-time cloud sync. Schema is prepared in supabase-schema.sql.'}
-          </p>
-
-          <div className="space-y-3">
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Supabase Project URL:
-              </label>
-              <input
-                type="text"
-                placeholder="https://xyzcompany.supabase.co"
-                value={form.supabase_url || ''}
-                onChange={(e) => setForm({ ...form, supabase_url: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-900 focus:bg-white focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Supabase Anon / Public API Key:
-              </label>
-              <input
-                type="password"
-                placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                value={form.supabase_anon_key || ''}
-                onChange={(e) => setForm({ ...form, supabase_anon_key: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-900 focus:bg-white focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
-
-            <div className="flex items-center gap-3 pt-1">
-              <button
-                type="button"
-                onClick={handleTestSupabase}
-                disabled={isTesting}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors disabled:opacity-50"
-              >
-                {isTesting
-                  ? (isAr ? 'جارٍ فحص الاتصال...' : 'Testing...')
-                  : (isAr ? 'فحص الاتصال بقاعدة البيانات' : 'Test Supabase Connection')}
-              </button>
-            </div>
-
-            {testResult && (
-              <div
-                className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
-                  testResult.success
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                    : 'bg-amber-50 border-amber-200 text-amber-800'
-                }`}
-              >
-                {testResult.success ? (
-                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-                ) : (
-                  <AlertCircle className="w-4 h-4 shrink-0 text-amber-600" />
-                )}
-                <span>{testResult.message}</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Section 4: Data Management & Export */}
+        {/* Section 3: Data Management & Export */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
             <Download className="w-5 h-5 text-teal-600" />
@@ -458,7 +338,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         </div>
 
-        {/* Section 5: Account Management & Data Deletion (Danger Zone) */}
+        {/* Section 4: Account Management & Data Deletion (Danger Zone) */}
         <div className="bg-red-50/50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-900/60 rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex items-center gap-2 border-b border-red-200/60 dark:border-red-800/60 pb-3">
             <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -520,49 +400,6 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </div>
         </div>
 
-        {/* App Logo & Google Cloud OAuth Setup */}
-        <div className="bg-white p-6 rounded-2xl border border-teal-100 shadow-2xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <img
-                src="/logo.png"
-                alt="Mediflow Logo"
-                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-teal-500/30 shadow-md"
-              />
-              <div>
-                <h3 className="text-base font-bold text-slate-900">
-                  {isAr ? 'شعار التطبيق وبيانات شاشة Google OAuth' : 'App Logo & Google OAuth Setup'}
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  {isAr
-                    ? 'لوجو رسمي جاهز للرفع وشاشة مساعدة لملء بيانات Google Cloud Console'
-                    : 'Official high-res logo ready for Google Cloud Console OAuth consent screen'}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <a
-                href="/logo.png"
-                download="mediflow-logo.png"
-                className="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <Download className="w-4 h-4 text-teal-600" />
-                <span>{isAr ? 'تحميل اللوجو' : 'Download Logo'}</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={() => setShowOAuthModal(true)}
-                className="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                <span>{isAr ? 'عرض بيانات Google' : 'View Google Data'}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
         {savedNotice && (
           <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-emerald-800 text-sm">
             <CheckCircle2 className="w-5 h-5 shrink-0" />
@@ -583,12 +420,6 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           </button>
         </div>
       </form>
-
-      <OAuthHelperModal
-        isOpen={showOAuthModal}
-        onClose={() => setShowOAuthModal(false)}
-        lang={lang}
-      />
     </div>
   );
 };

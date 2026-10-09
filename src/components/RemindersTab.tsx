@@ -13,6 +13,11 @@ import {
   CalendarCheck,
   MapPin,
   ExternalLink,
+  Calendar,
+  Download,
+  AlarmClock,
+  Laptop,
+  Tablet,
 } from 'lucide-react';
 import { DoseSchedule, Medicine, Reminder, UserSettings } from '../types/mediflow';
 import { formatTimeArabic, formatDateArabic } from '../utils/doseCalculator';
@@ -23,6 +28,13 @@ import {
   requestNotificationPermission,
   triggerReminderNotification,
 } from '../utils/notificationService';
+import {
+  getGoogleCalendarUrl,
+  generateSingleDoseIcs,
+  generateFullScheduleIcs,
+  downloadIcsFile,
+  detectDevice,
+} from '../utils/calendarSync';
 
 interface RemindersTabProps {
   medicines: Medicine[];
@@ -50,6 +62,24 @@ export const RemindersTab: React.FC<RemindersTabProps> = ({
   );
   const [now, setNow] = useState(Date.now());
   const [testNotificationSent, setTestNotificationSent] = useState(false);
+  const [device] = useState(() => detectDevice());
+  const [icsExportedNotice, setIcsExportedNotice] = useState(false);
+
+  const handleExportAllToCalendar = () => {
+    if (medicines.length === 0) {
+      alert(isAr ? 'لا توجد أدوية مسجلة حالياً لتصديرها.' : 'No medications to export.');
+      return;
+    }
+    const ics = generateFullScheduleIcs(medicines, doses, lang);
+    downloadIcsFile('mediflow-alarms.ics', ics);
+    setIcsExportedNotice(true);
+    setTimeout(() => setIcsExportedNotice(false), 4000);
+  };
+
+  const handleExportSingleToCalendar = (med: Medicine, doseTime: string) => {
+    const ics = generateSingleDoseIcs(med, doseTime, lang);
+    downloadIcsFile(`${med.name}-alarm.ics`, ics);
+  };
 
   // Update clock every 30 seconds for countdown
   useEffect(() => {
@@ -315,6 +345,56 @@ export const RemindersTab: React.FC<RemindersTabProps> = ({
         </div>
       )}
 
+      {/* Universal Device & Alarm Sync Card */}
+      <div className="bg-gradient-to-br from-teal-500/10 via-emerald-500/5 to-cyan-500/10 border-2 border-teal-500/30 rounded-2xl p-5 shadow-xs space-y-3.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-teal-600 text-white rounded-xl shadow-xs">
+              <AlarmClock className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                  {isAr ? 'منبه وتقويم الهاتف لكافة الأجهزة' : 'Phone Alarms & Calendar Sync'}
+                </h4>
+                <span className="px-2 py-0.5 text-3xs font-bold rounded-full bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 border border-teal-200 dark:border-teal-700">
+                  {device.isDesktop
+                    ? (isAr ? '🖥️ لابتوب / كمبيوتر' : '🖥️ Laptop / PC')
+                    : device.isTablet
+                    ? (isAr ? '📟 تابلت / جهاز لوحي' : '📟 Tablet')
+                    : (isAr ? '📱 هاتف ذكي' : '📱 Mobile Phone')}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                {isAr
+                  ? 'رنين وتنبيهات صوتية تعمل حتى عند إغلاق المتصفح عبر مزامنة مواعيد الأدوية مع منبه وتقويم هاتفك.'
+                  : 'Get audible alarms even when browser is closed by syncing with your native calendar app.'}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleExportAllToCalendar}
+            className="px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shrink-0 transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <CalendarCheck className="w-4 h-4" />
+            <span>{isAr ? 'مزامنة كافة المواعيد مع منبه الهاتف (.ics)' : 'Sync All Alarms (.ics)'}</span>
+          </button>
+        </div>
+
+        {icsExportedNotice && (
+          <div className="p-3 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 text-xs font-semibold flex items-center gap-2 animate-in fade-in duration-150">
+            <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>
+              {isAr
+                ? '✅ تم إنشاء وتحميل ملف المنبه والتقويم! افتح الملف ليتم تسجيل مواعيد أدويتك كمنبهات وتذكيرات مباشرة في تقويم جهازك.'
+                : '✅ Calendar alarms exported! Open the downloaded file to add all medication alarms to your device calendar.'}
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* Browser Notification Permission Banner */}
       {notificationPermission !== 'granted' ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -416,6 +496,27 @@ export const RemindersTab: React.FC<RemindersTabProps> = ({
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center">
+                    {/* Quick Add to Calendar / Phone Alarm */}
+                    <div className="flex items-center gap-1 border-r border-slate-200 dark:border-slate-800 pr-2 mr-1">
+                      <a
+                        href={getGoogleCalendarUrl(med, rem.reminder_time, lang)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950/40 transition-colors cursor-pointer"
+                        title={isAr ? 'إضافة إلى تقويم Google' : 'Add to Google Calendar'}
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleExportSingleToCalendar(med, rem.reminder_time)}
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors cursor-pointer"
+                        title={isAr ? 'إضافة لمنبه وتقويم الهاتف (.ics)' : 'Add to Phone Alarm (.ics)'}
+                      >
+                        <AlarmClock className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
                     {isTaken ? (
                       <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-lg">
                         <Check className="w-3.5 h-3.5" />
