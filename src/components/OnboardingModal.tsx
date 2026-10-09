@@ -174,30 +174,30 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-xl w-full p-6 md:p-8 shadow-2xl space-y-6 relative border border-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 md:p-8 shadow-2xl space-y-6 relative border border-slate-100 dark:border-slate-800">
         <button
           onClick={onClose}
-          className="absolute top-5 left-5 p-2 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100 cursor-pointer"
+          className="absolute top-5 left-5 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
         <div className="text-right">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 border border-teal-200 rounded-full text-xs font-bold text-teal-800 mb-2">
-            <Cloud className="w-3.5 h-3.5 text-teal-600" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 rounded-full text-xs font-bold text-teal-800 dark:text-teal-300 mb-2">
+            <Cloud className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
             <span>{isAr ? 'مزامنة السجلات الطبية في Google Drive' : 'Google Drive Medical Folders'}</span>
           </div>
-          <h2 className="text-xl md:text-2xl font-black text-slate-900">
+          <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
             {isAr ? 'حدد أسماء المجلدات العائلية التي ترغب في إنشائها' : 'Name Your Family Health Folders'}
           </h2>
-          <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
             {isAr
               ? 'اجعل الأمر سهلاً ومباشراً: اكتب أسماء الأقارب أو الأفراد الذين ترغب في حفظ أدويتهم وجداولهم، وسيقوم النظام بإنشاء مجلد وملف إكسل خاص بكل فرد تلقائياً على Google Drive.'
               : 'Write the names of the family members you want. We will automatically create folders and Excel spreadsheets on Google Drive for each.'}
           </p>
           {userEmail && (
-            <div className="mt-2 text-2xs text-teal-700 font-mono bg-teal-50/60 px-2.5 py-1 rounded-lg inline-block">
+            <div className="mt-2 text-2xs text-teal-700 dark:text-teal-300 font-mono bg-teal-50/60 dark:bg-teal-950/40 px-2.5 py-1 rounded-lg inline-block border border-teal-200/50 dark:border-teal-800">
               {isAr ? `الحساب المتصل: ${userEmail}` : `Connected: ${userEmail}`}
             </div>
           )}
@@ -205,7 +205,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Quick Suggestions */}
         <div className="space-y-2 text-right">
-          <span className="text-2xs font-bold text-slate-400 block">
+          <span className="text-2xs font-bold text-slate-400 dark:text-slate-500 block">
             {isAr ? 'اقتراحات سريعة بنقرة واحدة:' : 'Quick suggestions:'}
           </span>
           <div className="flex flex-wrap items-center gap-1.5">
@@ -214,11 +214,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 key={idx}
                 type="button"
                 onClick={() => handleAddSuggestion(s)}
-                className="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-slate-700 rounded-lg text-2xs font-semibold border border-slate-200 transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-teal-950/50 hover:text-teal-800 dark:hover:text-teal-300 text-slate-700 dark:text-slate-300 rounded-lg text-2xs font-semibold border border-slate-200 dark:border-slate-700 transition-colors flex items-center gap-1 cursor-pointer"
               >
                 <span>{s.icon}</span>
                 <span>{s.name}</span>
-                <Plus className="w-3 h-3 text-slate-400" />
+                <Plus className="w-3 h-3 text-slate-400 dark:text-slate-500" />
               </button>
             ))}
           </div>
@@ -226,7 +226,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
         {/* Add custom folder input */}
         <div className="space-y-2">
-          <label className="text-xs font-bold text-slate-800 block text-right">
+          <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block text-right">
             {isAr ? 'كتابة اسم مجلد أو شخص جديد:' : 'Add a family member or folder name:'}
           </label>
           <div className="flex items-center gap-2">
@@ -236,7 +236,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               onChange={(e) => setNewFolderName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddFolder())}
               placeholder={isAr ? 'اكتب الاسم هنا (مثال: والدي، عمتي نادية، طفلي عمر...)' : 'Write name here...'}
-              className="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
+              className="flex-1 px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none"
             />
             <button
               type="button"

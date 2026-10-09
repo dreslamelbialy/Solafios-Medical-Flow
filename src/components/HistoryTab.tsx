@@ -72,18 +72,18 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header Banner */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs text-teal-700 font-semibold mb-1">
+            <div className="flex items-center gap-2 text-xs text-teal-700 dark:text-teal-400 font-semibold mb-1">
               <span>{isAr ? 'السجل الدوائي والالتزام' : 'Medication History & Adherence'}</span>
               <span aria-hidden="true">·</span>
               <span>{isAr ? 'متابعة شاملة' : 'Complete Audit'}</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900">
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {isAr ? 'سجل الأدوية والكورسات السابقة' : 'Medication History & Adherence'}
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {isAr
                 ? 'استعراض الأدوية المنتهية، نسبة التزامك بالجرعات، وسجل تاريخي بكل جرعة تم أخذها.'
                 : 'Review past medications, overall adherence rate, and chronological intake records.'}
@@ -91,15 +91,15 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
           </div>
 
           {/* Adherence Rate Box */}
-          <div className="flex items-center gap-3 bg-teal-50 border border-teal-200 rounded-2xl p-4">
-            <div className="w-12 h-12 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-lg">
+          <div className="flex items-center gap-3 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800/80 rounded-2xl p-4">
+            <div className="w-12 h-12 rounded-xl bg-teal-600 dark:bg-teal-500 text-white flex items-center justify-center font-black text-lg">
               {adherence.percentage}%
             </div>
             <div>
-              <div className="text-xs font-bold text-teal-900">
+              <div className="text-xs font-bold text-teal-900 dark:text-teal-200">
                 {isAr ? 'معدل الالتزام الكلي' : 'Overall Adherence'}
               </div>
-              <div className="text-2xs text-teal-700 mt-0.5">
+              <div className="text-2xs text-teal-700 dark:text-teal-300 mt-0.5">
                 {isAr
                   ? `أُخذت ${adherence.taken} من أصل ${adherence.total} جرعة`
                   : `${adherence.taken} of ${adherence.total} doses taken`}
@@ -111,51 +111,51 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <div className="text-2xs text-slate-500 font-medium">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+          <div className="text-2xs text-slate-500 dark:text-slate-400 font-medium">
             {isAr ? 'الأدوية النشطة حالياً' : 'Active Medications'}
           </div>
-          <div className="text-xl font-bold text-slate-900 mt-1">{activeMeds.length}</div>
+          <div className="text-xl font-bold text-slate-900 dark:text-white mt-1">{activeMeds.length}</div>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <div className="text-2xs text-slate-500 font-medium">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+          <div className="text-2xs text-slate-500 dark:text-slate-400 font-medium">
             {isAr ? 'الكورسات المنتهية' : 'Completed Courses'}
           </div>
-          <div className="text-xl font-bold text-slate-900 mt-1">{completedMeds.length}</div>
+          <div className="text-xl font-bold text-slate-900 dark:text-white mt-1">{completedMeds.length}</div>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <div className="text-2xs text-slate-500 font-medium">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+          <div className="text-2xs text-slate-500 dark:text-slate-400 font-medium">
             {isAr ? 'الجرعات المسجلة كـ مأخوذة' : 'Total Doses Taken'}
           </div>
-          <div className="text-xl font-bold text-emerald-600 mt-1">{adherence.taken}</div>
+          <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{adherence.taken}</div>
         </div>
-        <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <div className="text-2xs text-slate-500 font-medium">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+          <div className="text-2xs text-slate-500 dark:text-slate-400 font-medium">
             {isAr ? 'الجرعات المتخطاة' : 'Skipped Doses'}
           </div>
-          <div className="text-xl font-bold text-slate-600 mt-1">{adherence.skipped}</div>
+          <div className="text-xl font-bold text-slate-600 dark:text-slate-400 mt-1">{adherence.skipped}</div>
         </div>
       </div>
 
       {/* Sub tabs: Completed Courses vs Intake Log */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-6">
-        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-6">
+        <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
           <button
             onClick={() => setActiveSubTab('courses')}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
+            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activeSubTab === 'courses'
-                ? 'bg-teal-50 text-teal-900 border border-teal-200'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-teal-50 dark:bg-teal-950/60 text-teal-900 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             {isAr ? 'الكورسات السابقة والمنتهية' : 'Completed Medications'} ({completedMeds.length})
           </button>
           <button
             onClick={() => setActiveSubTab('log')}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
+            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
               activeSubTab === 'log'
-                ? 'bg-teal-50 text-teal-900 border border-teal-200'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-teal-50 dark:bg-teal-950/60 text-teal-900 dark:text-teal-200 border border-teal-200 dark:border-teal-800'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             {isAr ? 'سجل الجرعات المأخوذة' : 'Intake Audit Log'} ({takenLog.length})
@@ -166,11 +166,11 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
           <div>
             {completedMeds.length === 0 ? (
               <div className="text-center py-10">
-                <Pill className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                <h4 className="text-sm font-bold text-slate-700">
+                <Pill className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">
                   {isAr ? 'لا توجد كورسات علاجية منتهية حتى الآن' : 'No completed medication courses yet'}
                 </h4>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
                   {isAr
                     ? 'عندما تنتهي فترة علاج أي دواء نشط، سيظهر هنا تلقائياً مع خيار تجديد الكورس.'
                     : 'When a medication duration passes, it moves to this completed archive.'}
@@ -185,27 +185,27 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
                   return (
                     <div
                       key={med.id}
-                      className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 space-y-3"
+                      className="border border-slate-200 dark:border-slate-800 rounded-xl p-4 bg-slate-50/50 dark:bg-slate-950/40 space-y-3"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <h4 className="text-sm font-bold text-slate-900">{med.name}</h4>
-                          <div className="text-xs text-slate-500 mt-0.5">
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white">{med.name}</h4>
+                          <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                             {med.strength} · {med.dose} · {med.duration} {isAr ? 'أيام' : 'days'}
                           </div>
                         </div>
-                        <span className="text-2xs bg-slate-200/80 text-slate-700 px-2 py-0.5 rounded-md font-semibold">
+                        <span className="text-2xs bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md font-semibold">
                           {isAr ? 'كورس منتهي' : 'Completed'}
                         </span>
                       </div>
 
-                      <div className="text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-100 flex items-center justify-between">
+                      <div className="text-xs text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800 flex items-center justify-between">
                         <span>{isAr ? 'نسبة الالتزام:' : 'Adherence:'}</span>
-                        <span className="font-bold text-teal-800">{medAdherence.percentage}%</span>
+                        <span className="font-bold text-teal-800 dark:text-teal-300">{medAdherence.percentage}%</span>
                       </div>
 
                       {med.notes && (
-                        <p className="text-2xs text-slate-500 italic">
+                        <p className="text-2xs text-slate-500 dark:text-slate-400 italic">
                           "{med.notes}"
                         </p>
                       )}
@@ -213,9 +213,9 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
                       <div className="pt-1 flex items-center justify-end">
                         <button
                           onClick={() => onRestartMedicine(med)}
-                          className="px-3 py-1.5 bg-white hover:bg-teal-50 border border-slate-200 hover:border-teal-300 text-teal-900 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors"
+                          className="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:border-teal-300 text-teal-900 dark:text-teal-200 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
                         >
-                          <RotateCcw className="w-3.5 h-3.5 text-teal-600" />
+                          <RotateCcw className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                           <span>{isAr ? 'تجديد / إعادة الكورس' : 'Restart Course'}</span>
                         </button>
                       </div>
@@ -229,13 +229,13 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
           <div>
             {takenLog.length === 0 ? (
               <div className="text-center py-10">
-                <History className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                <h4 className="text-sm font-bold text-slate-700">
+                <History className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300">
                   {isAr ? 'لا توجد جرعات مسجلة بعد' : 'No intake logs recorded yet'}
                 </h4>
               </div>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
                 {takenLog.map((log) => {
                   const med = medicineMap.get(log.medicine_id);
                   if (!med) return null;
@@ -246,15 +246,15 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({
                       className="py-3 flex items-center justify-between gap-3 text-xs"
                     >
                       <div className="flex items-center gap-3">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                         <div>
-                          <span className="font-bold text-slate-900">{med.name}</span>
-                          <span className="text-slate-400 mx-1.5">·</span>
-                          <span className="text-slate-600">{med.dose}</span>
+                          <span className="font-bold text-slate-900 dark:text-white">{med.name}</span>
+                          <span className="text-slate-400 dark:text-slate-600 mx-1.5">·</span>
+                          <span className="text-slate-600 dark:text-slate-300">{med.dose}</span>
                         </div>
                       </div>
 
-                      <div className="text-right text-slate-500 font-mono text-2xs">
+                      <div className="text-right text-slate-500 dark:text-slate-400 font-mono text-2xs">
                         {log.taken_at
                           ? `${formatDateArabic(log.taken_at)} - ${formatTimeArabic(log.taken_at)}`
                           : formatTimeArabic(log.dose_time)}

@@ -264,18 +264,18 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header Banner */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs text-teal-700 font-semibold mb-1">
+            <div className="flex items-center gap-2 text-xs text-teal-700 dark:text-teal-400 font-semibold mb-1">
               <span>{isAr ? 'نموذج الإدخال الطبي السريري' : 'Clinical Entry Form'}</span>
               <span aria-hidden="true">·</span>
               <span>{isAr ? 'بيانات المريض، الطبيب والموقع' : 'Patient, Doctor & Map Location'}</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900">
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {isAr ? 'إضافة دواء وجدول علاجي جديد' : 'Add Medication & Treatment Plan'}
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {isAr
                 ? 'أدخل بيانات المريض، مصدر الروشتة (طبيب أو استخدام شخصي)، موقع العيادة وموعد المراجعة، وتفاصيل الجرعات.'
                 : 'Enter patient information, prescription origin, clinic location coordinates, follow-up visit, and medicine doses.'}
@@ -284,8 +284,8 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
 
           {/* Quick Presets Selector */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+            <span className="text-xs font-medium text-slate-400 dark:text-slate-500 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
               {isAr ? 'أمثلة سريعة:' : 'Quick Presets:'}
             </span>
             {PRESETS.map((p, idx) => (
@@ -293,7 +293,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 key={idx}
                 type="button"
                 onClick={() => applyPreset(p)}
-                className="text-xs px-2.5 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 text-slate-700 rounded-lg transition-colors font-medium border border-slate-200 cursor-pointer"
+                className="text-xs px-2.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 hover:text-teal-800 dark:hover:text-teal-300 text-slate-700 dark:text-slate-200 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-700 cursor-pointer"
               >
                 {p.name.split(' ')[0]}
               </button>
@@ -305,17 +305,17 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
       {/* Main Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Section 1: Patient Details */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-            <User className="w-5 h-5 text-teal-600" />
-            <h3 className="font-bold text-slate-900 text-base">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <User className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <h3 className="font-bold text-slate-900 dark:text-white text-base">
               {isAr ? 'بيانات المريض (Patient Information)' : 'Patient Information'}
             </h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                 {isAr ? 'اسم المريض (Patient Name)' : 'Patient Name'}
               </label>
               <input
@@ -323,12 +323,12 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 value={patientName}
                 onChange={(e) => setPatientName(e.target.value)}
                 placeholder={isAr ? 'مثال: أحمد سيف' : 'e.g. John Doe'}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                 {isAr ? 'سن / عمر المريض (Age)' : 'Patient Age'}
               </label>
               <div className="relative">
@@ -337,34 +337,34 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                   value={patientAge}
                   onChange={(e) => setPatientAge(e.target.value)}
                   placeholder={isAr ? 'مثال: 16' : 'e.g. 16'}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                  className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                 />
-                <span className="absolute left-3 top-2 text-xs text-slate-400 pointer-events-none">
+                <span className="absolute left-3 top-2 text-xs text-slate-400 dark:text-slate-500 pointer-events-none">
                   {isAr ? 'سنة' : 'yrs'}
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                 {isAr ? 'تاريخ الزيارة والفحص (Visit Date)' : 'Visit Date'}
               </label>
               <input
                 type="date"
                 value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none font-mono"
+                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none font-mono"
               />
             </div>
           </div>
         </div>
 
         {/* Section 2: Prescription Origin & Clinic/Location */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-5">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
             <div className="flex items-center gap-2">
-              <Stethoscope className="w-5 h-5 text-teal-600" />
-              <h3 className="font-bold text-slate-900 text-base">
+              <Stethoscope className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              <h3 className="font-bold text-slate-900 dark:text-white text-base">
                 {isAr ? 'مصدر الروشتة وموقع المركز الطبي' : 'Prescription Source & Clinic Location'}
               </h3>
             </div>
@@ -377,16 +377,16 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
               onClick={() => setPrescriptionSource('doctor')}
               className={`p-4 rounded-xl border text-right transition-all flex items-start gap-3 cursor-pointer ${
                 prescriptionSource === 'doctor'
-                  ? 'border-teal-600 bg-teal-50/50 ring-2 ring-teal-600/20 text-teal-950 font-bold'
-                  : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700'
+                  ? 'border-teal-600 bg-teal-50/50 dark:bg-teal-950/40 ring-2 ring-teal-600/20 text-teal-950 dark:text-teal-200 font-bold'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300'
               }`}
             >
-              <Stethoscope className={`w-5 h-5 shrink-0 mt-0.5 ${prescriptionSource === 'doctor' ? 'text-teal-600' : 'text-slate-400'}`} />
+              <Stethoscope className={`w-5 h-5 shrink-0 mt-0.5 ${prescriptionSource === 'doctor' ? 'text-teal-600 dark:text-teal-400' : 'text-slate-400'}`} />
               <div>
                 <div className="text-sm font-bold">
                   {isAr ? 'وصفة طبية من طبيب / مستشفى' : 'Doctor / Hospital Prescription'}
                 </div>
-                <div className="text-2xs text-slate-500 mt-0.5 font-normal">
+                <div className="text-2xs text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
                   {isAr ? 'تتضمن اسم الطبيب، موقع المجمع، وتاريخ المراجعة القادمة' : 'Includes doctor name, location, and follow-up appointment'}
                 </div>
               </div>
@@ -397,16 +397,16 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
               onClick={() => setPrescriptionSource('personal')}
               className={`p-4 rounded-xl border text-right transition-all flex items-start gap-3 cursor-pointer ${
                 prescriptionSource === 'personal'
-                  ? 'border-teal-600 bg-teal-50/50 ring-2 ring-teal-600/20 text-teal-950 font-bold'
-                  : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700'
+                  ? 'border-teal-600 bg-teal-50/50 dark:bg-teal-950/40 ring-2 ring-teal-600/20 text-teal-950 dark:text-teal-200 font-bold'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300'
               }`}
             >
-              <User className={`w-5 h-5 shrink-0 mt-0.5 ${prescriptionSource === 'personal' ? 'text-teal-600' : 'text-slate-400'}`} />
+              <User className={`w-5 h-5 shrink-0 mt-0.5 ${prescriptionSource === 'personal' ? 'text-teal-600 dark:text-teal-400' : 'text-slate-400'}`} />
               <div>
                 <div className="text-sm font-bold">
                   {isAr ? 'استخدام شخصي / ذاتي (OTC)' : 'Personal / Self-medication'}
                 </div>
-                <div className="text-2xs text-slate-500 mt-0.5 font-normal">
+                <div className="text-2xs text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
                   {isAr ? 'دواء شخصي بدون وصفة طبية ولا يتطلب موقع أو طبيب' : 'Over-the-counter medicine without clinic location'}
                 </div>
               </div>
@@ -415,10 +415,10 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
 
           {/* Conditional Clinical Fields if Doctor is selected */}
           {prescriptionSource === 'doctor' ? (
-            <div className="space-y-4 pt-2 border-t border-slate-100">
+            <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                     {isAr ? 'اسم الطبيب المعالج (Doctor Name)' : 'Doctor Name'}
                   </label>
                   <input
@@ -426,12 +426,12 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                     value={doctorName}
                     onChange={(e) => setDoctorName(e.target.value)}
                     placeholder={isAr ? 'مثال: د. معاذ عطيتو' : 'e.g. Dr. Moaz Ateto'}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5">
                     {isAr ? 'اسم المستشفى أو المجمع الطبي (Clinic / Hospital)' : 'Clinic / Hospital Name'}
                   </label>
                   <input
@@ -439,17 +439,17 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                     value={clinicName}
                     onChange={(e) => setClinicName(e.target.value)}
                     placeholder={isAr ? 'مثال: مستشفى الأقصر الدولي' : 'e.g. Luxor International Hospital'}
-                    className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                    className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                   />
                 </div>
               </div>
 
               {/* Coordinates and Google Maps Integration */}
-              <div className="bg-teal-50/60 border border-teal-200/80 rounded-2xl p-4 space-y-3">
+              <div className="bg-teal-50/60 dark:bg-teal-950/30 border border-teal-200/80 dark:border-teal-800/80 rounded-2xl p-4 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-teal-700" />
-                    <label className="text-xs font-bold text-teal-950">
+                    <MapPin className="w-4 h-4 text-teal-700 dark:text-teal-400" />
+                    <label className="text-xs font-bold text-teal-950 dark:text-teal-200">
                       {isAr ? 'خطوط الطول والعرض لموقع المجمع أو العيادة (Coordinates)' : 'Hospital GPS Coordinates (Lat, Long)'}
                     </label>
                   </div>
@@ -457,7 +457,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowMapsHelp(!showMapsHelp)}
-                    className="text-2xs text-teal-800 hover:text-teal-950 font-semibold flex items-center gap-1 underline cursor-pointer"
+                    className="text-2xs text-teal-800 dark:text-teal-300 hover:text-teal-950 dark:hover:text-teal-100 font-semibold flex items-center gap-1 underline cursor-pointer"
                   >
                     <HelpCircle className="w-3.5 h-3.5" />
                     <span>{isAr ? 'كيف أنسخ خطوط الطول والعرض من Google Maps؟' : 'How to copy coordinates from Google Maps?'}</span>
@@ -466,12 +466,12 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
 
                 {/* Google Maps How-To Instructions Box */}
                 {showMapsHelp && (
-                  <div className="bg-white border border-teal-300/80 rounded-xl p-3.5 text-xs text-slate-700 space-y-2 shadow-2xs">
-                    <div className="font-bold text-teal-900 flex items-center gap-1">
-                      <Info className="w-4 h-4 text-teal-600" />
+                  <div className="bg-white dark:bg-slate-900 border border-teal-300/80 dark:border-teal-800 rounded-xl p-3.5 text-xs text-slate-700 dark:text-slate-300 space-y-2 shadow-2xs">
+                    <div className="font-bold text-teal-900 dark:text-teal-200 flex items-center gap-1">
+                      <Info className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                       <span>{isAr ? 'طريقة نسخ الإحداثيات من Google Maps بسهولة:' : 'How to copy coordinates from Google Maps:'}</span>
                     </div>
-                    <ol className="list-decimal list-inside space-y-1 text-2xs text-slate-600 pr-1">
+                    <ol className="list-decimal list-inside space-y-1 text-2xs text-slate-600 dark:text-slate-400 pr-1">
                       <li>{isAr ? 'افتح تطبيق أو موقع Google Maps وابحث عن موقع المستشفى أو العيادة.' : 'Open Google Maps and find the clinic.'}</li>
                       <li>{isAr ? 'انقر بالزر الأيمن بالفأرة على موقع المستشفى (أو اضغط مطولاً على الدبوس الأحمر على الموبايل).' : 'Right-click on the hospital pin (or long-press on mobile).'}</li>
                       <li>{isAr ? 'ستظهر لك أرقام الإحداثيات في القائمة (مثال: 25.6872, 32.6396). انقر عليها لنسخها والصقها هنا.' : 'Click the coordinates shown at the top to copy and paste here.'}</li>
@@ -480,7 +480,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                       <button
                         type="button"
                         onClick={() => setClinicCoordinates('25.6872, 32.6396')}
-                        className="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-lg text-2xs font-semibold border border-teal-200 cursor-pointer"
+                        className="px-2.5 py-1 bg-teal-50 dark:bg-teal-900/40 hover:bg-teal-100 dark:hover:bg-teal-900/60 text-teal-800 dark:text-teal-300 rounded-lg text-2xs font-semibold border border-teal-200 dark:border-teal-700 cursor-pointer"
                       >
                         {isAr ? '📌 تجربة مثال إحداثيات (مستشفى الأقصر الدولي)' : 'Try Luxor Hospital Coordinates'}
                       </button>
@@ -495,7 +495,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                       value={clinicCoordinates}
                       onChange={(e) => setClinicCoordinates(e.target.value)}
                       placeholder="e.g. 25.6872, 32.6396"
-                      className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 text-xs font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                      className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none"
                     />
                   </div>
 
@@ -514,26 +514,26 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
               </div>
 
               {/* Next Follow-Up Visit Appointment */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1.5 flex items-center gap-1">
-                    <CalendarCheck className="w-4 h-4 text-teal-600" />
+                  <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1.5 flex items-center gap-1">
+                    <CalendarCheck className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                     <span>{isAr ? 'موعد استشارة ومراجعة الطبيب القادمة (Next Visit)' : 'Next Follow-up Visit Date & Time'}</span>
                   </label>
                   <input
                     type="datetime-local"
                     value={nextVisitTime}
                     onChange={(e) => setNextVisitTime(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-900 focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
 
                 <div className="flex items-center justify-between p-2">
                   <div>
-                    <span className="text-xs font-bold text-slate-800 block">
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block">
                       {isAr ? 'تنبيه بموعد زيارة الطبيب' : 'Doctor Appointment Alert'}
                     </span>
-                    <span className="text-2xs text-slate-500">
+                    <span className="text-2xs text-slate-500 dark:text-slate-400">
                       {isAr ? 'تنبيهك قبل موعد المراجعة بيوم وفي نفس اليوم' : 'Remind you before the appointment'}
                     </span>
                   </div>
@@ -547,7 +547,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
               </div>
             </div>
           ) : (
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-center gap-2">
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
               <Info className="w-4 h-4 text-slate-400 shrink-0" />
               <span>
                 {isAr
@@ -559,8 +559,8 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
         </div>
 
         {/* Section 3: Medicine Form & Type */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
-          <label className="block text-sm font-semibold text-slate-800 mb-3">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs">
+          <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3">
             {isAr ? 'نوع الدواء وشكل الجرعة (Medicine Type):' : 'Medicine Form & Type:'}
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -574,11 +574,11 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                   onClick={() => setType(t.id)}
                   className={`flex flex-col items-center justify-center p-3.5 rounded-xl border transition-all text-center cursor-pointer ${
                     isSelected
-                      ? 'border-teal-600 bg-teal-50 text-teal-900 ring-2 ring-teal-600/20 font-semibold'
-                      : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                      ? 'border-teal-600 bg-teal-50 dark:bg-teal-950/50 text-teal-900 dark:text-teal-200 ring-2 ring-teal-600/20 font-semibold'
+                      : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Icon className={`w-5 h-5 mb-1.5 ${isSelected ? 'text-teal-600' : 'text-slate-500'}`} />
+                  <Icon className={`w-5 h-5 mb-1.5 ${isSelected ? 'text-teal-600 dark:text-teal-400' : 'text-slate-500 dark:text-slate-400'}`} />
                   <span className="text-xs">{isAr ? t.labelAr : t.labelEn}</span>
                 </button>
               );
@@ -587,11 +587,11 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
         </div>
 
         {/* Section 4: Core Medicine Fields */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-5">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Name */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'اسم الدواء (Medicine Name) *' : 'Medicine Name *'}
               </label>
               <input
@@ -600,13 +600,13 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 placeholder={isAr ? 'مثال: Panadol Extra, Concor, Augmentin...' : 'e.g. Paracetamol, Augmentin'}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
               />
             </div>
 
             {/* Strength */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'التركيز (Strength)' : 'Strength'}
               </label>
               <input
@@ -614,7 +614,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 placeholder={isAr ? 'مثال: 500mg, 1g, 10mg...' : 'e.g. 500mg, 20mg'}
                 value={strength}
                 onChange={(e) => setStrength(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
               />
             </div>
           </div>
@@ -622,7 +622,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
             {/* Dose description */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'الجرعة (Dose Unit) *' : 'Dose Unit *'}
               </label>
               <input
@@ -631,13 +631,13 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 placeholder={isAr ? 'قرص / قطرة / 5 مل' : '1 tablet / 5ml'}
                 value={dose}
                 onChange={(e) => setDose(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
               />
             </div>
 
             {/* Pills per dose */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'عدد الوحدات في الجرعة' : 'Units per dose'}
               </label>
               <input
@@ -647,19 +647,19 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 required
                 value={pillsPerDose}
                 onChange={(e) => setPillsPerDose(parseFloat(e.target.value) || 1)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
               />
             </div>
 
             {/* Times per day */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'مرات الاستخدام يومياً' : 'Times per day'}
               </label>
               <select
                 value={timesPerDay}
                 onChange={(e) => setTimesPerDay(parseInt(e.target.value, 10))}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
               >
                 <option value={1}>{isAr ? 'مرة واحدة يومياً (1 time)' : 'Once daily (1x)'}</option>
                 <option value={2}>{isAr ? 'مرتان يومياً (كل 12 ساعة)' : 'Twice daily (2x)'}</option>
@@ -670,7 +670,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
 
             {/* Duration in days */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'مدة العلاج بالأيام' : 'Duration (Days)'}
               </label>
               <div className="relative">
@@ -681,9 +681,9 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                   required
                   value={duration}
                   onChange={(e) => setDuration(parseInt(e.target.value, 10) || 1)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
                 />
-                <span className="absolute left-3 top-2.5 text-xs text-slate-400 pointer-events-none">
+                <span className="absolute left-3 top-2.5 text-xs text-slate-400 dark:text-slate-500 pointer-events-none">
                   {isAr ? 'يوم' : 'days'}
                 </span>
               </div>
@@ -693,13 +693,13 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
             {/* Schedule */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'طريقة ونظام المواعيد *' : 'Schedule Routine *'}
               </label>
               <select
                 value={schedule}
                 onChange={(e) => setSchedule(e.target.value as ScheduleTiming)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
               >
                 {SCHEDULE_OPTIONS.map((opt) => (
                   <option key={opt.id} value={opt.id}>
@@ -711,7 +711,7 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
 
             {/* First dose date & time */}
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                 {isAr ? 'تاريخ ووقت أول جرعة *' : 'First Dose Time *'}
               </label>
               <input
@@ -719,14 +719,14 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
                 required
                 value={firstDoseTime}
                 onChange={(e) => setFirstDoseTime(e.target.value)}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm font-mono"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm font-mono"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+            <label className="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
               {isAr ? 'ملاحظات الطبيب وإرشادات الاستخدام (Notes)' : 'Doctor Notes & Instructions'}
             </label>
             <textarea
@@ -734,17 +734,17 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
               placeholder={isAr ? 'مثال: يؤخذ بعد الأكل، يحفظ في الثلاجة، يرجى عدم تفويت أي جرعة...' : 'Special instructions, meal advice, warnings...'}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white text-sm"
+              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-900 text-sm"
             />
           </div>
         </div>
 
         {/* Live Calculation Preview Box */}
         {previewDoses.length > 0 && (
-          <div className="bg-teal-50/60 border border-teal-200/80 rounded-2xl p-5">
+          <div className="bg-teal-50/60 dark:bg-teal-950/30 border border-teal-200/80 dark:border-teal-800/80 rounded-2xl p-5">
             <div className="flex items-center gap-2 mb-3">
-              <Clock className="w-4 h-4 text-teal-700" />
-              <h3 className="text-sm font-bold text-teal-900">
+              <Clock className="w-4 h-4 text-teal-700 dark:text-teal-400" />
+              <h3 className="text-sm font-bold text-teal-900 dark:text-teal-200">
                 {isAr ? 'معاينة المواعيد المحسوبة لليوم الأول (Calculated Schedule Preview):' : 'Calculated Times for Day 1:'}
               </h3>
             </div>
@@ -752,12 +752,12 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
               {previewDoses.map((d, i) => (
                 <div
                   key={i}
-                  className="bg-white border border-teal-200 rounded-xl p-2.5 text-center shadow-2xs"
+                  className="bg-white dark:bg-slate-900 border border-teal-200 dark:border-teal-800/80 rounded-xl p-2.5 text-center shadow-2xs"
                 >
-                  <div className="text-2xs text-teal-700 font-medium">
+                  <div className="text-2xs text-teal-700 dark:text-teal-400 font-medium">
                     {isAr ? `الجرعة ${i + 1}` : `Dose ${i + 1}`}
                   </div>
-                  <div className="text-sm font-bold text-slate-900 mt-0.5">
+                  <div className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">
                     {formatTimeArabic(d.dose_time)}
                   </div>
                 </div>
@@ -768,14 +768,14 @@ export const AddMedicineTab: React.FC<AddMedicineTabProps> = ({
 
         {/* Error / Success Messages */}
         {errorMsg && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700 text-sm">
+          <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-xl flex items-center gap-2 text-red-700 dark:text-red-300 text-sm">
             <AlertCircle className="w-5 h-5 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successSaved && (
-          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-emerald-800 text-sm font-semibold">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl flex items-center gap-2 text-emerald-800 dark:text-emerald-200 text-sm font-semibold">
             <CheckCircle2 className="w-5 h-5 shrink-0" />
             <span>
               {isAr ? 'تم حفظ الدواء وتوليد جدول الجرعات وموعد مراجعة الطبيب بنجاح!' : 'Medication and follow-up appointment saved successfully!'}

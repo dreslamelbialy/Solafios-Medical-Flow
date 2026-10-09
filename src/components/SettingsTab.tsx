@@ -23,7 +23,7 @@ interface SettingsTabProps {
   settings: UserSettings;
   onUpdateSettings: (settings: UserSettings) => void;
   onResetData: () => void;
-  onRestoreSampleData: () => void;
+  onRestoreSampleData?: () => void;
   onPrintPrescription: () => void;
   onExportJson: () => void;
   onWipeAccount?: () => void;
@@ -34,7 +34,6 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   settings,
   onUpdateSettings,
   onResetData,
-  onRestoreSampleData,
   onPrintPrescription,
   onExportJson,
   onWipeAccount,
@@ -55,18 +54,18 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs text-teal-700 font-semibold mb-1">
+            <div className="flex items-center gap-2 text-xs text-teal-700 dark:text-teal-400 font-semibold mb-1">
               <span>{isAr ? 'تخصيص النظام' : 'System Preferences'}</span>
               <span aria-hidden="true">·</span>
               <span>{isAr ? 'أوقات الوجبات والاتصال' : 'Meal Routine & Database'}</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900">
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">
               {isAr ? 'إعدادات المستخدم ومواعيد الوجبات' : 'Settings & Meal Routines'}
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {isAr
                 ? 'حدد أوقات وجباتك وروتينك اليومي لحساب مواعيد الأدوية المرتبطة بالأكل تلقائياً وبدقة.'
                 : 'Define your meal and sleep schedule to calculate meal-related medication doses.'}
@@ -77,14 +76,14 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Section 1: Meal Routine Times */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-            <Utensils className="w-5 h-5 text-teal-600" />
-            <h3 className="font-bold text-slate-900 text-base">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <Utensils className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <h3 className="font-bold text-slate-900 dark:text-white text-base">
               {isAr ? 'أوقات الوجبات والروتين اليومي (Meal Schedule)' : 'Meal Routine Timings'}
             </h3>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {isAr
               ? 'تُستخدم هذه الأوقات تلقائياً عند إضافة دواء مجدول "قبل/بعد الفطار"، "قبل/بعد الغداء"، "قبل/بعد العشاء"، "قبل النوم"، أو "بعد الاستيقاظ".'
               : 'These times are used when scheduling medicines linked to meals or sleep routines.'}
@@ -92,8 +91,8 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
             {/* Breakfast */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-slate-200">
                 <Sun className="w-4 h-4 text-amber-500" />
                 <span>{isAr ? 'وقت الإفطار (Breakfast Time)' : 'Breakfast Time'}</span>
               </label>
@@ -101,16 +100,16 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 type="time"
                 value={form.breakfast_time}
                 onChange={(e) => setForm({ ...form, breakfast_time: e.target.value })}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-mono text-slate-900 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500"
               />
-              <span className="text-2xs text-slate-400 block">
+              <span className="text-2xs text-slate-400 dark:text-slate-500 block">
                 {isAr ? 'الافتراضي: 08:00 صباحاً' : 'Default: 08:00 AM'}
               </span>
             </div>
 
             {/* Lunch */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-slate-200">
                 <Utensils className="w-4 h-4 text-orange-500" />
                 <span>{isAr ? 'وقت الغداء (Lunch Time)' : 'Lunch Time'}</span>
               </label>
@@ -118,16 +117,16 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 type="time"
                 value={form.lunch_time}
                 onChange={(e) => setForm({ ...form, lunch_time: e.target.value })}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-mono text-slate-900 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500"
               />
-              <span className="text-2xs text-slate-400 block">
+              <span className="text-2xs text-slate-400 dark:text-slate-500 block">
                 {isAr ? 'الافتراضي: 02:00 ظهراً' : 'Default: 02:00 PM'}
               </span>
             </div>
 
             {/* Dinner */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-slate-200">
                 <Utensils className="w-4 h-4 text-purple-500" />
                 <span>{isAr ? 'وقت العشاء (Dinner Time)' : 'Dinner Time'}</span>
               </label>
@@ -135,33 +134,33 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 type="time"
                 value={form.dinner_time}
                 onChange={(e) => setForm({ ...form, dinner_time: e.target.value })}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-mono text-slate-900 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500"
               />
-              <span className="text-2xs text-slate-400 block">
+              <span className="text-2xs text-slate-400 dark:text-slate-500 block">
                 {isAr ? 'الافتراضي: 08:00 مساءً' : 'Default: 08:00 PM'}
               </span>
             </div>
 
             {/* Wake time */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-                <Sun className="w-4 h-4 text-teal-600" />
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-slate-200">
+                <Sun className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                 <span>{isAr ? 'وقت الاستيقاظ (Wake Time)' : 'Wake-up Time'}</span>
               </label>
               <input
                 type="time"
                 value={form.wake_time}
                 onChange={(e) => setForm({ ...form, wake_time: e.target.value })}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-mono text-slate-900 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500"
               />
-              <span className="text-2xs text-slate-400 block">
+              <span className="text-2xs text-slate-400 dark:text-slate-500 block">
                 {isAr ? 'الافتراضي: 07:00 صباحاً' : 'Default: 07:00 AM'}
               </span>
             </div>
 
             {/* Sleep time */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-1.5">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-1.5">
+              <label className="flex items-center gap-1.5 text-xs font-bold text-slate-800 dark:text-slate-200">
                 <Moon className="w-4 h-4 text-indigo-500" />
                 <span>{isAr ? 'وقت النوم (Sleep Time)' : 'Bedtime'}</span>
               </label>
@@ -169,9 +168,9 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 type="time"
                 value={form.sleep_time}
                 onChange={(e) => setForm({ ...form, sleep_time: e.target.value })}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-mono text-slate-900 focus:ring-2 focus:ring-teal-500"
+                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500"
               />
-              <span className="text-2xs text-slate-400 block">
+              <span className="text-2xs text-slate-400 dark:text-slate-500 block">
                 {isAr ? 'الافتراضي: 11:00 مساءً' : 'Default: 11:00 PM'}
               </span>
             </div>
@@ -179,28 +178,28 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
 
         {/* Section 2: Preferences & Sound */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-            <Settings className="w-5 h-5 text-teal-600" />
-            <h3 className="font-bold text-slate-900 text-base">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <Settings className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <h3 className="font-bold text-slate-900 dark:text-white text-base">
               {isAr ? 'التفضيلات والتنبيهات الصوتية' : 'Preferences & Alerts'}
             </h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Sound alert toggle */}
-            <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
               <div className="flex items-center gap-3">
                 {form.sound_enabled ? (
-                  <Volume2 className="w-5 h-5 text-teal-600" />
+                  <Volume2 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
                 ) : (
                   <VolumeX className="w-5 h-5 text-slate-400" />
                 )}
                 <div>
-                  <div className="text-xs font-bold text-slate-900">
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">
                     {isAr ? 'نغمات التنبيه الصوتية' : 'Audio Chime Alerts'}
                   </div>
-                  <div className="text-2xs text-slate-500">
+                  <div className="text-2xs text-slate-500 dark:text-slate-400">
                     {isAr ? 'تشغيل نغمة عند حلول موعد الجرعة' : 'Play chime when dose is due'}
                   </div>
                 </div>
@@ -214,7 +213,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
             </div>
 
             {/* Language switch */}
-            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-slate-100">
                   {isAr ? 'لغة واجهة التطبيق' : 'Application Language'}
@@ -226,7 +225,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
               <select
                 value={form.language}
                 onChange={(e) => setForm({ ...form, language: e.target.value as 'ar' | 'en' })}
-                className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200"
+                className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200"
               >
                 <option value="ar">العربية (RTL)</option>
                 <option value="en">English (LTR)</option>
@@ -234,7 +233,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
             </div>
 
             {/* Theme switch (Light / Dark) */}
-            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
               <div className="flex items-center gap-2.5">
                 {form.theme === 'dark' ? (
                   <Moon className="w-5 h-5 text-indigo-400" />
@@ -253,7 +252,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
               <select
                 value={form.theme || 'light'}
                 onChange={(e) => setForm({ ...form, theme: e.target.value as 'light' | 'dark' })}
-                className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200"
+                className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200"
               >
                 <option value="light">{isAr ? 'فاتح (Light)' : 'Light'}</option>
                 <option value="dark">{isAr ? 'داكن (Dark)' : 'Dark'}</option>
@@ -263,10 +262,10 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
 
         {/* Section 3: Data Management & Export */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-            <Download className="w-5 h-5 text-teal-600" />
-            <h3 className="font-bold text-slate-900 text-base">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <Download className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <h3 className="font-bold text-slate-900 dark:text-white text-base">
               {isAr ? 'إدارة البيانات والنسخ الاحتياطي والطباعة' : 'Data Management & Printing'}
             </h3>
           </div>
@@ -275,14 +274,14 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
             <button
               type="button"
               onClick={onPrintPrescription}
-              className="p-3.5 bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-300 rounded-xl text-right transition-all flex flex-col justify-between"
+              className="p-3.5 bg-slate-50 dark:bg-slate-950 hover:bg-teal-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-teal-300 rounded-xl text-right transition-all flex flex-col justify-between cursor-pointer"
             >
-              <Printer className="w-5 h-5 text-teal-600 mb-2" />
+              <Printer className="w-5 h-5 text-teal-600 dark:text-teal-400 mb-2" />
               <div>
-                <div className="text-xs font-bold text-slate-900">
+                <div className="text-xs font-bold text-slate-900 dark:text-white">
                   {isAr ? 'طباعة جدول الأدوية' : 'Print Schedule'}
                 </div>
-                <div className="text-2xs text-slate-500 mt-0.5">
+                <div className="text-2xs text-slate-500 dark:text-slate-400 mt-0.5">
                   {isAr ? 'بطاقة مطبوعة للمريض' : 'Patient card printable'}
                 </div>
               </div>
@@ -291,14 +290,14 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
             <button
               type="button"
               onClick={onExportJson}
-              className="p-3.5 bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-300 rounded-xl text-right transition-all flex flex-col justify-between"
+              className="p-3.5 bg-slate-50 dark:bg-slate-950 hover:bg-teal-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-teal-300 rounded-xl text-right transition-all flex flex-col justify-between cursor-pointer"
             >
-              <Download className="w-5 h-5 text-teal-600 mb-2" />
+              <Download className="w-5 h-5 text-teal-600 dark:text-teal-400 mb-2" />
               <div>
-                <div className="text-xs font-bold text-slate-900">
+                <div className="text-xs font-bold text-slate-900 dark:text-white">
                   {isAr ? 'تصدير JSON' : 'Export JSON Backup'}
                 </div>
-                <div className="text-2xs text-slate-500 mt-0.5">
+                <div className="text-2xs text-slate-500 dark:text-slate-400 mt-0.5">
                   {isAr ? 'تنزيل نسخة للملفات/Drive' : 'Download for Drive'}
                 </div>
               </div>
@@ -306,31 +305,15 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
 
             <button
               type="button"
-              onClick={onRestoreSampleData}
-              className="p-3.5 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 rounded-xl text-right transition-all flex flex-col justify-between"
-            >
-              <RotateCcw className="w-5 h-5 text-amber-600 mb-2" />
-              <div>
-                <div className="text-xs font-bold text-slate-900">
-                  {isAr ? 'استعادة الأدوية التجريبية' : 'Sample Data'}
-                </div>
-                <div className="text-2xs text-slate-500 mt-0.5">
-                  {isAr ? 'بيانات سريرية تجريبية' : 'Reload demo medications'}
-                </div>
-              </div>
-            </button>
-
-            <button
-              type="button"
               onClick={onResetData}
-              className="p-3.5 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-300 rounded-xl text-right transition-all flex flex-col justify-between"
+              className="p-3.5 bg-slate-50 dark:bg-slate-950 hover:bg-red-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:border-red-300 rounded-xl text-right transition-all flex flex-col justify-between cursor-pointer"
             >
-              <RotateCcw className="w-5 h-5 text-red-600 mb-2" />
+              <RotateCcw className="w-5 h-5 text-red-600 dark:text-red-400 mb-2" />
               <div>
-                <div className="text-xs font-bold text-red-900">
+                <div className="text-xs font-bold text-red-900 dark:text-red-300">
                   {isAr ? 'مسح كافة البيانات' : 'Reset All'}
                 </div>
-                <div className="text-2xs text-red-700 mt-0.5">
+                <div className="text-2xs text-red-700 dark:text-red-400 mt-0.5">
                   {isAr ? 'تفريغ السجل بالكامل' : 'Clear all local data'}
                 </div>
               </div>
